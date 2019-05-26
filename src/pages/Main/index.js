@@ -4,6 +4,8 @@ import logo from '../../assets/images/logo.png';
 
 import { Container, Form } from './styles';
 
+import CompareList from '../../components/CompareList';
+
 function Main() {
   return (
     <Container>
@@ -13,6 +15,8 @@ function Main() {
         <input type="text" placeholder="Usuário/Reposotório" />
         <button type="submit">OK</button>
       </Form>
+
+      <CompareList />
     </Container>
   );
 }
