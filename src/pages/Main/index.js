@@ -11,6 +11,7 @@ import { FindRepository } from '../../services/api/Repository';
 class Main extends React.Component {
   state = {
     repositoryInput: '',
+    repositoryError: false,
     repositories: [],
   };
 
@@ -19,22 +20,25 @@ class Main extends React.Component {
     const { repositories, repositoryInput } = this.state;
     try {
       const { data: repository } = await FindRepository(repositoryInput);
-      
+
       repository.last_commit = moment(repository.pushed_at).fromNow();
 
-      this.setState({ repositories: [...repositories, repository] });
+      this.setState({
+        repositories: [...repositories, repository],
+        repositoryError: false,
+      });
     } catch (error) {
-      console.log(error);
+      this.setState({ repositoryError: true });
     }
   };
 
   render() {
-    const { repositories, repositoryInput } = this.state;
+    const { repositories, repositoryInput, repositoryError } = this.state;
     return (
       <Container>
         <img src={logo} alt="GITCOMPARE" />
 
-        <Form onSubmit={this.handleSubmit}>
+        <Form error={repositoryError} onSubmit={this.handleSubmit}>
           <input
             type="text"
             value={repositoryInput}
