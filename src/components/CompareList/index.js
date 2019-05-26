@@ -1,33 +1,52 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Container, Repository } from './styles';
 
-function CompareList() {
-  return (
-    <Container>
-      <Repository>
+const CompareList = ({ repositories }) => (
+  <Container>
+    {repositories.map(repo => (
+      <Repository key={repo.id}>
         <header>
-          <img src="https://avatars3.githubusercontent.com/u/69631?v=4" alt="Facebook" />
-          <strong>React</strong>
-          <small>Facebook</small>
+          <img src={repo.owner.avatar_url} alt={repo.owner.login} />
+          <strong>{repo.name}</strong>
+          <small>{repo.owner.login}</small>
         </header>
 
         <ul>
           <li>
-            95,000 <small>stars</small>
+            {repo.stargazers_count} <small>stars</small>
           </li>
           <li>
-            95,000 <small>forks</small>
+            {repo.forks_count} <small>forks</small>
           </li>
           <li>
-            95,000 <small>issues</small>
+            {repo.open_issues_count} <small>issues</small>
           </li>
           <li>
-            3 days ago <small>last commit</small>
+            {repo.pushed_at} <small>last commit</small>
           </li>
         </ul>
       </Repository>
-    </Container>
-  );
-}
+    ))}
+  </Container>
+);
+
+const content = {
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  stargazers_count: PropTypes.number.isRequired,
+  forks_count: PropTypes.number.isRequired,
+  open_issues_count: PropTypes.number.isRequired,
+  pushed_at: PropTypes.string.isRequired,
+  owner: PropTypes.shape({
+    avatar_url: PropTypes.string.isRequired,
+    login: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+CompareList.propTypes = {
+  repositories: PropTypes.arrayOf(PropTypes.shape(content)).isRequired,
+};
 
 export default CompareList;
