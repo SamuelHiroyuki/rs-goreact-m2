@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 import logo from '../../assets/images/logo.png';
 
@@ -17,8 +18,11 @@ class Main extends React.Component {
     e.preventDefault();
     const { repositories, repositoryInput } = this.state;
     try {
-      const response = await FindRepository(repositoryInput);
-      this.setState({ repositories: [...repositories, response.data] });
+      const { data: repository } = await FindRepository(repositoryInput);
+      
+      repository.last_commit = moment(repository.pushed_at).fromNow();
+
+      this.setState({ repositories: [...repositories, repository] });
     } catch (error) {
       console.log(error);
     }
