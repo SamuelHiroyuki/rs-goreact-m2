@@ -11,7 +11,8 @@ import { FindRepository } from '../../services/api/Repository';
 class Main extends React.Component {
   state = {
     loading: false,
-    repositoryInput: '',
+    inputUser: '',
+    inputRepository: '',
     repositoryError: false,
     repositories: [],
   };
@@ -29,9 +30,9 @@ class Main extends React.Component {
 
     this.setState({ loading: true });
 
-    const { repositories, repositoryInput } = this.state;
+    const { repositories, inputUser, inputRepository } = this.state;
     try {
-      const { data: repository } = await FindRepository(repositoryInput);
+      const { data: repository } = await FindRepository(`${inputUser}/${inputRepository}`);
 
       repository.last_commit = moment(repository.pushed_at).fromNow();
 
@@ -49,7 +50,7 @@ class Main extends React.Component {
     } catch (error) {
       this.setState({ repositoryError: true });
     } finally {
-      this.setState({ loading: false });
+      this.setState({ loading: false, inputUser: '', inputRepository: '' });
     }
   };
 
@@ -75,7 +76,8 @@ class Main extends React.Component {
 
       this.setState({
         repositoryError: false,
-        repositoryInput: '',
+        inputUser: '',
+        inputRepository: '',
         repositories: repositories.map(repo => (repo.id === data.id ? data : repo)),
       });
 
@@ -88,7 +90,8 @@ class Main extends React.Component {
   render() {
     const {
       repositories,
-      repositoryInput,
+      inputUser,
+      inputRepository,
       repositoryError,
       loading,
     } = this.state;
@@ -97,12 +100,20 @@ class Main extends React.Component {
         <img src={logo} alt="GITCOMPARE" />
 
         <Form error={repositoryError} onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            value={repositoryInput}
-            onChange={e => this.setState({ repositoryInput: e.target.value })}
-            placeholder="Usuário/Reposotório"
-          />
+          <div className="container-input">
+            <input
+              type="text"
+              value={inputUser}
+              onChange={e => this.setState({ inputUser: e.target.value })}
+              placeholder="Usuário"
+            />
+            <input
+              type="text"
+              value={inputRepository}
+              onChange={e => this.setState({ inputRepository: e.target.value })}
+              placeholder="Reposotório"
+            />
+          </div>
           <button type="submit">
             {loading ? <i className="fa fa-spinner fa-pulse" /> : 'OK'}
           </button>

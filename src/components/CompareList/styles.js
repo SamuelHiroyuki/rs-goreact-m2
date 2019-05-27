@@ -4,7 +4,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 50px;
+  margin-top: 20px;
 `;
 
 export const Repository = styled.div`
