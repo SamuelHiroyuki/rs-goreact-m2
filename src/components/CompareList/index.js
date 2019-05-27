@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  GoStar, GoGitBranch, GoIssueOpened, GoGitCommit,
+} from 'react-icons/go';
 
 import { Container, Repository } from './styles';
+
+const iconStyle = { paddingTop: 4, marginRight: 5 };
 
 const CompareList = ({ repositories }) => (
   <Container>
@@ -17,15 +22,19 @@ const CompareList = ({ repositories }) => (
 
           <ul>
             <li>
+              <GoStar style={iconStyle} />
               {repo.stargazers_count} <small>stars</small>
             </li>
             <li>
+              <GoGitBranch style={iconStyle} />
               {repo.forks_count} <small>forks</small>
             </li>
             <li>
+              <GoIssueOpened style={iconStyle} />
               {repo.open_issues_count} <small>issues</small>
             </li>
             <li>
+              <GoGitCommit style={iconStyle} />
               {repo.last_commit} <small>last commit</small>
             </li>
           </ul>

@@ -16,6 +16,14 @@ class Main extends React.Component {
     repositories: [],
   };
 
+  async componentDidMount() {
+    this.setState({ loading: true });
+
+    this.setState({ loading: false, repositories: await this.getLocalRepositories() });
+  }
+
+  getLocalRepositories = async () => JSON.parse(await localStorage.getItem('@GitCompare:repositories')) || [];
+
   handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,6 +39,13 @@ class Main extends React.Component {
         repositories: [...repositories, repository],
         repositoryError: false,
       });
+
+      const localRepositories = await this.getLocalRepositories();
+
+      await localStorage.setItem(
+        '@GitCompare:repositories',
+        JSON.stringify([...localRepositories, repository]),
+      );
     } catch (error) {
       this.setState({ repositoryError: true });
     } finally {
