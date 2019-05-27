@@ -8,7 +8,7 @@ import { Container, Repository } from './styles';
 
 const iconStyle = { paddingTop: 4, marginRight: 5 };
 
-const CompareList = ({ repositories }) => (
+const CompareList = ({ repositories, removeRepository, updateRepository }) => (
   <Container>
     {repositories.map((repo, index) => {
       const key = `${index}-${repo.id}`;
@@ -38,6 +38,16 @@ const CompareList = ({ repositories }) => (
               {repo.last_commit} <small>last commit</small>
             </li>
           </ul>
+          <div className="buttons-container">
+            <button type="button" onClick={() => updateRepository(repo.id)}>
+              <i className="fa fa-retweet" />
+              Atualizar
+            </button>
+            <button type="button" onClick={() => removeRepository(repo.id)}>
+              <i className="fa fa-trash" />
+              Excluir
+            </button>
+          </div>
         </Repository>
       );
     })}
@@ -55,6 +65,8 @@ const content = {
     login: PropTypes.string.isRequired,
     avatar_url: PropTypes.string.isRequired,
   }).isRequired,
+  removeRepository: PropTypes.func.isRequired,
+  updateRepository: PropTypes.func.isRequired,
 };
 
 CompareList.propTypes = {
